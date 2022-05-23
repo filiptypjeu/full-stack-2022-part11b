@@ -30,7 +30,8 @@ jobs:
         with:
           command: npm run test:e2e
           start: npm start
-          wait-on: http://localhost:3001
+          wait-on: http://localhost:4000
+          env: PORT=4000,MONGODB_URI=${{ secrets.MONGODB_URI }}
       - if: ${{ github.event_name == 'push' }}
         name: Deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12
