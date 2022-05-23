@@ -23,14 +23,14 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
-      # - name: test
-      #   run: npm run test
-      # - name: e2e tests
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     command: npm run test:e2e
-      #     start: npm run start-prod
-      #     wait-on: http://localhost:5000
+      - name: test
+        run: npm run test
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e
+          start: npm start
+          wait-on: http://localhost:3001
       - if: ${{ github.event_name == 'push' }}
         name: Deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12
@@ -59,15 +59,15 @@ jobs:
       #     webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
       #     username: GitHub
       #     args: Build failed on commit ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.committer.username }}
-  # tag_release:
-  #   if: "${{ github.event_name == 'push' && !contains(join(toJSON(github.event.commits.*.message)), '#skip') }}"
-  #   needs: [simple_deployment_pipeline]
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Bump version and push tag
-  #       uses: anothrNick/github-tag-action@1.36.0
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         DEFAULT_BUMP: patch
-  #         VERBOSE: true
+  tag_release:
+    if: "${{ github.event_name == 'push' && !contains(join(toJSON(github.event.commits.*.message)), '#skip') }}"
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          VERBOSE: true
