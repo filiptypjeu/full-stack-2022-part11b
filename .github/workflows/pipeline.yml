@@ -31,18 +31,18 @@ jobs:
       #     command: npm run test:e2e
       #     start: npm run start-prod
       #     wait-on: http://localhost:5000
-      # - if: ${{ github.event_name == 'push' }}
-      #   name: Deploy to heroku
-      #   uses: akhileshns/heroku-deploy@v3.12.12
-      #   with:
-      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-      #     heroku_app_name: stark-woodland-88329
-      #     heroku_email: filip.stenbacka@gmail.com
-      #     healthcheck: https://stark-woodland-88329.herokuapp.com/health
-      #     checkstring: ok
-      #     delay: 2
-      #     procfile: "web: npm run start-prod"
-      #     rollbackonhealthcheckfailed: true
+      - if: ${{ github.event_name == 'push' }}
+        name: Deploy to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: quiet-oasis-04315
+          heroku_email: filip.stenbacka@gmail.com
+          healthcheck: https://quiet-oasis-04315.herokuapp.com/health
+          checkstring: ok
+          delay: 2
+          procfile: "web: npm start"
+          rollbackonhealthcheckfailed: true
       # - if: ${{ github.event_name == 'push' && success() }}
       #   name: Send OK message with Discord bot
       #   uses: appleboy/discord-action@master
