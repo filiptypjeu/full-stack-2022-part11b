@@ -1,0 +1,73 @@
+---
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: Install dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+      # - name: test
+      #   run: npm run test
+      # - name: e2e tests
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     command: npm run test:e2e
+      #     start: npm run start-prod
+      #     wait-on: http://localhost:5000
+      # - if: ${{ github.event_name == 'push' }}
+      #   name: Deploy to heroku
+      #   uses: akhileshns/heroku-deploy@v3.12.12
+      #   with:
+      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+      #     heroku_app_name: stark-woodland-88329
+      #     heroku_email: filip.stenbacka@gmail.com
+      #     healthcheck: https://stark-woodland-88329.herokuapp.com/health
+      #     checkstring: ok
+      #     delay: 2
+      #     procfile: "web: npm run start-prod"
+      #     rollbackonhealthcheckfailed: true
+      # - if: ${{ github.event_name == 'push' && success() }}
+      #   name: Send OK message with Discord bot
+      #   uses: appleboy/discord-action@master
+      #   with:
+      #     webhook_id: ${{ secrets.WEBHOOK_ID }}
+      #     webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      #     username: GitHub
+      #     args: A new version of Pokedex has been deployed to https://stark-woodland-88329.herokuapp.com
+      # - if: ${{ github.event_name == 'push' && !success() }}
+      #   name: Send FAILED message with Discord bot
+      #   uses: appleboy/discord-action@master
+      #   with:
+      #     webhook_id: ${{ secrets.WEBHOOK_ID }}
+      #     webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      #     username: GitHub
+      #     args: Build failed on commit ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.committer.username }}
+  # tag_release:
+  #   if: "${{ github.event_name == 'push' && !contains(join(toJSON(github.event.commits.*.message)), '#skip') }}"
+  #   needs: [simple_deployment_pipeline]
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Bump version and push tag
+  #       uses: anothrNick/github-tag-action@1.36.0
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         DEFAULT_BUMP: patch
+  #         VERBOSE: true
