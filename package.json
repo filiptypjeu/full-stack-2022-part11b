@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:frontend && rm -rf build && cp -r frontend/build .",
+    "build": "npm run build:frontend && npm run build:version && npm run build:copy",
     "build:frontend": "cd frontend && npm run build",
+    "build:version": "bash write_version.sh",
+    "build:copy": "rm -rf build && cp -r frontend/build .",
     "install": "npm run install:backend && npm run install:frontend",
     "install:backend": "cd backend && npm install",
     "install:frontend": "cd frontend && npm install",
