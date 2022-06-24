@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon -L src/index.js",
     "logs": "heroku logs --tail",
     "open": "npx heroku open",
     "start": "node src/index.js"
